@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://unpkg.com/@trutoo/event-bus@latest/dist/index.umd.min.js"></script>
+<script>
+eventBus.register();
+
+</script>
+
+<script>
+
+eventBus.subscribe("ekle",function(data){
+  console.log("ekle subscribe");
+    alert(data+":)");
+    console.log(data+"data");
+});
+
+
+</script>
+<style>
+
+</style>
+</head>
+<body>
+  
+  <div class="table">
+    <h1>Hello World!!</h1>
+  </div>
+
+</body>
+</html>

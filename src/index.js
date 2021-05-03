@@ -1,17 +1,51 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+process.env.DEFAULT_CONTENT_TIMEOUT = "70000";
+process.env.GLOBAL_REQUEST_TIMEOUT = "75000";
+const PuzzleJs = require('@puzzle-js/core');
+const path = require('path');
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const gateway = new PuzzleJs.Gateway({
+    name: "search",
+    fragments: [
+        {
+            name: "search",
+            testCookie: "my-header-ab",
+            version: "1.0.0",
+            versions: {
+                "1.0.0": {
+                    assets: [],
+                    dependencies: []
+                }
+            },
+            render: {
+                url: "*"
+            }
+        },
+        {
+          name: "result",
+          testCookie: "my-header-ab",
+          version: "1.0.0",
+          versions: {
+              "1.0.0": {
+                  assets: [],
+                  dependencies: []
+              }
+          },
+          render: {
+              url: "*"
+          }
+      },
+    ],
+    api: [
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+    ],
+    serverOptions: {
+        port: 4449
+    },
+    url: 'https://localhost:4449',
+    fragmentsFolder: path.join(__dirname, "./src/fragments")
+});
+
+
+gateway.init(() => {
+    console.log('Search form is ready to respond');
+});

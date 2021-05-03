@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://unpkg.com/@trutoo/event-bus@latest/dist/index.umd.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+eventBus.register("Search");
+
+</script>
+
+<script>
+
+eventBus.subscribe("Search",function(data){
+  axios.get('https://mocki.io/v1/0beaffb6-ad27-4dff-8c7f-b0ce9757c53f')
+        .then(function (response) {
+          var search=data.payload.search;
+         if(data.payload.value==="key"){
+           var resSet=[];
+           for(let i=0 ;i< response.data.length;i++){
+              if(response.data[i].key.includes(search)){
+                resSet.push(response.data[i]);
+              }
+           }
+
+           loadTableData(resSet);
+            console.log(resSet);
+         }else{
+          var resSet=[];
+           for(let i=0 ;i< response.data.length;i++){
+              if(response.data[i].value.includes(search)){
+                resSet.push(response.data[i]);
+              }
+           }
+
+           loadTableData(resSet);
+         }
+        })
+        .catch(function (error) {
+          
+        });
+});
+
+function loadTableData(items) {
+    const table = document.getElementById("testBody");
+    table.innerHTML='';
+    items.forEach( item => {
+      let row = table.insertRow();
+      let key = row.insertCell(0);
+      key.innerHTML = item.key;
+      let value = row.insertCell(1);
+      value.innerHTML = item.value;
+      let action= row.insertCell(2);
+      action.innerHTML = '<button id="btn" class="btn btn-primary" name="btn">Edit</button>';
+    });
+  }
+//   var intervalId = setInterval(function() {
+//       eventBus.subscribe("Search",function(data){
+//          console.log(data);
+//          var search=data.payload.search;
+//          if(data.payload.value==="key"){
+//             console.log("key");
+//          }else{
+//            console.log("value");
+//          }
+
+//         });
+
+// }, 5000);
+
+</script>
+<style>
+.table{
+  margin-left: 30px;
+    -moz-border-radius: 16px;
+    -webkit-border-radius: 16px;
+     border-radius: 16px;
+    height:280px;
+    background-color:#fff;
+    overflow-y:scroll;
+    position: relative;
+    border-collapse: collapse; 
+    width:1500;
+    border: 1px solid black;
+    table-layout: fixed;
+}
+
+tr.tr, .tr th {
+    width: 500px;
+}
+</style>
+</head>
+<body>
+  
+  <div class="table" id=tablediv>
+    <table id="table" aria-describedby="table" name="table" class="table-bordered text-center">
+      <thead class="thead-dark">
+          <tr class="tr">
+              <th scope="col">Key</th>
+              <th scope="col">Value</th>
+              <th scope="col">Actions</th>
+          </tr>
+      </thead>
+      <tbody id="testBody">
+      </tbody>
+  </table>
+  </div>
+
+</body>
+</html>
